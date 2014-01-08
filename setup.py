@@ -4,7 +4,7 @@
 from setuptools import setup, find_packages
 
 setup(name='douban-review-api-testing',
-      version='0.0.2',
+      version='0.0.5',
       keywords=('Douban', 'OAuth2', 'Douban Review APIs Testing'),
       description='Python scripts for Douban Review APIs Testing',
       author='zangzhe',
