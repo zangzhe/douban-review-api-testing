@@ -1,5 +1,5 @@
 *.py[co]
-
+*.log
 tests/local_config.py
 douban_client/scope.py
 

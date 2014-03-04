@@ -40,11 +40,11 @@ try:
 except ImportError:
     KEY = '008c9529361828e901a5bf7ba2487abb'
     SECRET = 'b13c7ae9e656b793'
-    CALLBACK = ''
+    CALLBACK = 'http://www.google.com.hk'
 
     SCOPE_MAP = { 'basic': ['douban_basic_common', 'community_basic_user'], }
     SCOPE = ','.join(reduce(lambda x, y: x + y, SCOPE_MAP.values()))
-    TOKEN = '0b8d6971ffb8f53722a83c55ff2adfa5'
+    TOKEN = 'd7541b21200ff4ed85fc5163602fdec7'
 
 def get_client_v2():
     client = DoubanClient(KEY, SECRET, CALLBACK, SCOPE)
@@ -53,6 +53,8 @@ def get_client_v2():
 
     if token:
         client.auth_with_token(token)
+        #refresh_token_code = '35dff6616ab89c43a19fe3244029d4c9'
+        #client.refresh_token(refresh_token_code)
     else:
         print_('Go to the following link in your browser:')
         print_(client.authorize_url)

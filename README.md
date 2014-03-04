@@ -7,7 +7,8 @@ douban-client-0.0.6，权限认证基于 OAuth 2.0。
 
 ### douban 评论接口列表及测试覆盖情况：
 ```
-  API描述                      测试覆盖情况    
+  API描述                      测试覆盖情况   
+* 获取指定用户的所有评论       覆盖 api v1 版本
 * 获取指定书籍的所有评论       覆盖 api v1 版本     
 * 发布指定书籍的评论           覆盖 api v2 版本
 * 更新指定书籍的评论           覆盖 api v2 版本
@@ -71,6 +72,13 @@ FAILED (failures=1)
 
 ### 用例说明
 ```
+## TestApiBookReview 用户评论接口测试类 (5 tests)
+test_get_reviews_function_v1  获取特定用户评论功能测试函数
+test_get_reviews_exception_user_id_v1  针对 user_id 的获取图书评论异常测试函数
+test_get_reviews_exception_start_index_v1  针对 start_index 的获取用户评论异常测试函数
+test_get_reviews_exception_max_results_v1  针对 max_results 的获取用户评论异常测试函数
+test_get_reviews_exception_orderby_v1  针对 orderby 的获取用户评论异常测试函数
+
 ## TestApiBookReview 图书评论接口测试类 (16 tests)
 test_get_reviews_function_v1  获取图书评论功能测试函数
 test_new_update_delete_review_function_v2  增删改图书评论功能测试函数
@@ -215,6 +223,10 @@ AssertionError: False is not true
 答： 豆瓣官方对普通用户的访问次数设限，通常为 40 次每分钟，频繁执行测试，很可能
 导致临时性被禁用。可以重启计算机或者等待几个小时，就会解禁。
 
+10.
+问：测试总大量 case 报 ERROR，返回报错 access_token_has_expired。
+答：access_token 过期，需要重新手动获取（我尝试使用 refresh access code 的接口，但每次都失败）。
+
 ```
 
 
@@ -222,12 +234,16 @@ AssertionError: False is not true
 ```
 1. 针对v1的代码耦合性强，需要改进。
 2. 测试用例补充。
-
+3. refresh_access_code 接口生效
 ```
 
 
 ### Changelog
 ```
+__v0.0.2 [2014-03-04]__
+* 增加对 api v1 用户评论接口的测试
+* 调整代码结构
+* 跟新了 access_token
 __v0.0.1 [2014-02-26]__
 * 根据豆瓣 API v2 文档，发布第一个版本
 ```

@@ -2,7 +2,7 @@
 
 from pyoauth2 import Client, AccessToken
 from .api import DoubanAPI
-
+import pdb
 
 class DoubanClient(DoubanAPI):
 
@@ -46,5 +46,6 @@ class DoubanClient(DoubanAPI):
         return getattr(self.access_token, 'refresh_token', None)
 
     def refresh_token(self, refresh_token):
+        #pdb.set_trace()
         access_token = AccessToken(self.client, token='', refresh_token=refresh_token)
         self.access_token = access_token.refresh()
