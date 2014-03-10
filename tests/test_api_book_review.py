@@ -31,7 +31,6 @@ class TestApiBookReview(DoubanClientTestBase):
 
         if self.debug:
             #print '#'*4 + 
-            jdata = json.loads(ret)
             jdata_f = json.dumps(jdata, sort_keys=True,indent=2)
             print jdata_f        
         
@@ -118,7 +117,6 @@ class TestApiBookReview(DoubanClientTestBase):
         ret = json.loads(ret)
 
         if self.debug:
-            jdata = json.loads(ret)
             jdata_f = json.dumps(jdata, sort_keys=True,indent=2)
             print jdata_f
         
@@ -159,7 +157,6 @@ class TestApiBookReview(DoubanClientTestBase):
         ret = json.loads(ret)
     
         if self.debug:
-            jdata = json.loads(ret)
             jdata_f = json.dumps(jdata, sort_keys=True,indent=2)
             print jdata_f    
         
@@ -200,7 +197,6 @@ class TestApiBookReview(DoubanClientTestBase):
         ret = json.loads(ret)
     
         if self.debug:
-            jdata = json.loads(ret)
             jdata_f = json.dumps(jdata, sort_keys=True,indent=2)
             print jdata_f
 
@@ -215,7 +211,6 @@ class TestApiBookReview(DoubanClientTestBase):
          self.content)
 
         if self.debug:
-            jdata = json.loads(ret)
             jdata_f = json.dumps(jdata, sort_keys=True,indent=2)
             print jdata_f
 
