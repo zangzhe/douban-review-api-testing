@@ -6,6 +6,8 @@ import sys
 from six import print_
 from six.moves import input, reduce
 
+status_code = {'OK':200, 'CREATED':201, 'ACCEPTED':202, 'BAD_REQUEST':400,\
+'UNAUTHORIZED':401, 'FORBIDDEN':403, 'NOT_FOUND':404, 'INTERNAL_SERVER_ERROR':500}
 
 TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -33,18 +35,20 @@ class DoubanClient_v1():
         #print r1.status, r1.reason
 
         data = r.read()
-        return data
+        return r.status, data
 
 try:
     from local_config import KEY, SECRET, CALLBACK, SCOPE, TOKEN
 except ImportError:
-    KEY = '008c9529361828e901a5bf7ba2487abb'
-    SECRET = 'b13c7ae9e656b793'
+    #KEY = '008c9529361828e901a5bf7ba2487abb'
+    #SECRET = 'b13c7ae9e656b793'
+    KEY = '0524a0d0e6737ee40f6de272b35a7cac'
+    SECRET = '89b25a1a84cf8bb3'
     CALLBACK = 'http://www.google.com.hk'
 
     SCOPE_MAP = { 'basic': ['douban_basic_common', 'community_basic_user'], }
     SCOPE = ','.join(reduce(lambda x, y: x + y, SCOPE_MAP.values()))
-    TOKEN = 'd7541b21200ff4ed85fc5163602fdec7'
+    TOKEN = '4beb8515d6352ed9e3c28f41829f8c8b'
 
 def get_client_v2():
     client = DoubanClient(KEY, SECRET, CALLBACK, SCOPE)
@@ -53,7 +57,7 @@ def get_client_v2():
 
     if token:
         client.auth_with_token(token)
-        #refresh_token_code = '35dff6616ab89c43a19fe3244029d4c9'
+        #refresh_token_code = REFRESH_TOKEN
         #client.refresh_token(refresh_token_code)
     else:
         print_('Go to the following link in your browser:')

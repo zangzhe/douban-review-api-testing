@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from uuid import uuid4
-from framework import DoubanClientTestBase, main                            
+from framework import DoubanClientTestBase, main, status_code                            
 import pdb
 import json
 from time import sleep
@@ -25,14 +25,9 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ self.start_index +\
         "&max-results=" + self.max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)
-
-        if self.debug:
-            print '## 1' 
-            jdata_f = json.dumps(ret, sort_keys=True,indent=2)
-            print jdata_f        
-        
+        self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         # check user_id value
         self.assertTrue(self.user_id in ret['link'][0]['@href'])
@@ -48,7 +43,8 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ self.start_index +\
         "&max-results=" + self.max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
+        self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         # check return string
         self.assertEqual('wrong people id:\'' + invalid_user_id +'\'', ret)
@@ -61,14 +57,9 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ invalid_start_index +\
         "&max-results=" + self.max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)
-
-        if self.debug:
-            print '## 2'
-            jdata_f = json.dumps(ret, sort_keys=True,indent=2)
-            print jdata_f
-        
+        self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         # check get default max_results entries
         self.assertEqual(int(self.max_results), len(ret['entry']))
@@ -78,9 +69,10 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ invalid_start_index +\
         "&max-results=" + self.max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)   
         self.assertTrue(isinstance(ret, dict))
+        self.assertEqual(stat, status_code['OK'])
         # check get 0 entry if start index too big
         self.assertEqual(0, len(ret['entry']))
 
@@ -89,9 +81,10 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ invalid_start_index +\
         "&max-results=" + self.max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)      
         self.assertTrue(isinstance(ret, dict))
+        self.assertEqual(stat, status_code['OK'])
         # check get default max_results entries
         self.assertEqual(int(self.max_results), len(ret['entry']))
         self.assertEqual('1', ret['opensearch:startIndex']['$t'])
@@ -103,14 +96,9 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ self.start_index +\
         "&max-results=" + invalid_max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)
-    
-        if self.debug:
-            print '## 3'
-            jdata_f = json.dumps(ret, sort_keys=True,indent=2)
-            print jdata_f    
-        
+        self.assertEqual(stat, status_code['OK']) 
         self.assertTrue(isinstance(ret, dict))
         # check get default max_results entries
         self.assertEqual(6, len(ret['entry']))
@@ -120,9 +108,10 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ self.start_index +\
         "&max-results=" + invalid_max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)      
         self.assertTrue(isinstance(ret, dict))
+        self.assertEqual(stat, status_code['OK'])
         # check only can get 50 entries
         self.assertEqual(6, len(ret['entry']))
 
@@ -131,9 +120,10 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ self.start_index +\
         "&max-results=" + invalid_max_results +\
         "&orderby=" + self.orderby_score
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)      
         self.assertTrue(isinstance(ret, dict))
+        self.assertEqual(stat, status_code['OK'])
         # check get no entries
         self.assertEqual(0, len(ret['entry']))        
 
@@ -144,15 +134,10 @@ class TestApiUserReview(DoubanClientTestBase):
         "/reviews?alt=json&start-index="+ self.start_index +\
         "&max-results=" + self.max_results +\
         "&orderby=" + invalid_orderby
-        ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.get(url)
         ret = json.loads(ret)
-    
-        if self.debug:
-            print '## 4'
-            jdata_f = json.dumps(ret, sort_keys=True,indent=2)
-            print jdata_f
-
         self.assertTrue(isinstance(ret, dict))
+        self.assertEqual(stat, status_code['OK'])
         self.assertEqual(int(self.max_results), len(ret['entry']))         
 
 if __name__ == '__main__':
