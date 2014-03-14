@@ -42,13 +42,13 @@ try:
 except ImportError:
     #KEY = '008c9529361828e901a5bf7ba2487abb'
     #SECRET = 'b13c7ae9e656b793'
-    KEY = '0524a0d0e6737ee40f6de272b35a7cac'
-    SECRET = '89b25a1a84cf8bb3'
-    CALLBACK = 'http://www.google.com.hk'
+    KEY = ''
+    SECRET = ''
+    CALLBACK = ''
 
     SCOPE_MAP = { 'basic': ['douban_basic_common', 'community_basic_user'], }
     SCOPE = ','.join(reduce(lambda x, y: x + y, SCOPE_MAP.values()))
-    TOKEN = '4beb8515d6352ed9e3c28f41829f8c8b'
+    TOKEN = ''
 
 def get_client_v2():
     client = DoubanClient(KEY, SECRET, CALLBACK, SCOPE)

@@ -240,6 +240,10 @@ AssertionError: False is not true
 
 ### Changelog
 ```
+__v0.0.3 [2014-03-14]__
+* 针对api返回值，增加对status code, error code的测试
+* 增加对空参数的异常测试
+* 删除了我自己的api key等用户认证
 __v0.0.2 [2014-03-04]__
 * 增加对 api v1 用户评论接口的测试
 * 调整代码结构
