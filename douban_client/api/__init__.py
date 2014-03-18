@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .user import User
+from .user import User, User_v1
 from .doumail import Doumail
 from .discussion import Discussion
 from .note import Note
@@ -10,9 +10,9 @@ from .online import Online
 from .event import Event
 from .guess import Guess
 from .miniblog import Miniblog
-from .book import Book
+from .book import Book, Book_v1
 from .movie import Movie
-from .music import Music
+from .music import Music, Music_v1
 
 
 class DoubanAPI(object):
@@ -71,3 +71,20 @@ class DoubanAPI(object):
     @property
     def music(self):
         return Music(self.access_token)
+
+class DoubanAPI_v1(object):
+
+    def __repr__(self):
+        return '<DoubanClient_v1 API>'
+
+    @property
+    def user(self):
+        return User_v1(self.conn)
+
+    @property
+    def book(self):
+        return Book_v1(self.conn)
+
+    @property
+    def music(self):
+        return Music_v1(self.conn)

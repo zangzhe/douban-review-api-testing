@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from pyoauth2 import Client, AccessToken
-from .api import DoubanAPI
+from .api import DoubanAPI, DoubanAPI_v1
 import pdb
+import httplib
 
 class DoubanClient(DoubanAPI):
 
@@ -49,3 +50,11 @@ class DoubanClient(DoubanAPI):
         #pdb.set_trace()
         access_token = AccessToken(self.client, token='', refresh_token=refresh_token)
         self.access_token = access_token.refresh()
+
+class DoubanClient_v1(DoubanAPI_v1):
+
+    API_HOST = "api.douban.com"
+
+    def __init__ (self):
+        self.conn = httplib.HTTPConnection(self.API_HOST)
+

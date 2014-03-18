@@ -21,18 +21,15 @@ class TestApiMusicReview(DoubanClientTestBase):
 
     # 获取音乐评论功能测试函数
     def test_get_reviews_function_v1(self):
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, self.start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         self.assertTrue(self.music_id in ret['link'][0]['@href'])
         self.assertEqual(self.start_index, ret['opensearch:startIndex']['$t'])
         self.assertEqual(self.max_results, ret['opensearch:itemsPerPage']['$t'])
-
+    
     # 增删改音乐评论功能测试函数
     def test_new_update_delete_review_function_v2(self):
         # new
@@ -55,35 +52,26 @@ class TestApiMusicReview(DoubanClientTestBase):
         stat, ret = self.client_v2.music.review.delete(review_id)
         self.assertEqual(stat, status_code['OK'])
         self.assertEqual('OK', ret)
-
+    
     # 针对 music_id 的获取音乐评论异常测试函数
     def test_get_reviews_exception_music_id_v1(self):
         invalid_music_id = 'BaiMusicId'   # bad music id
-        url = "/music/subject/"+ invalid_music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(invalid_music_id, self.start_index,\
+            self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         self.assertEqual('bad subject id', ret)
 
         invalid_music_id = '1000000000'   # wrong music id
-        url = "/music/subject/"+ invalid_music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(invalid_music_id, self.start_index,\
+            self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         self.assertEqual('wrong subject id', ret)
 
         invalid_music_id = ''   # empty music id
-        url = "/music/subject/"+ invalid_music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)      
+        stat, ret = self.client_v1.music.reviews(invalid_music_id, self.start_index,\
+            self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         self.assertEqual('bad subject id', ret)
@@ -91,33 +79,24 @@ class TestApiMusicReview(DoubanClientTestBase):
     # 针对 start_index 的获取音乐评论异常测试函数
     def test_get_reviews_exception_start_index_v1(self):
         invalid_start_index = 'BadStartIndex'  # bad start index
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, invalid_start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(int(self.max_results), len(ret['entry']))
         
         invalid_start_index = '10000'  # too big index
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, invalid_start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(0, len(ret['entry']))
 
         invalid_start_index = '-1'  # too small start index
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, invalid_start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -126,33 +105,24 @@ class TestApiMusicReview(DoubanClientTestBase):
     # 针对 max_results 的获取音乐评论异常测试函数
     def test_get_reviews_exception_max_results_v1(self):
         invalid_max_results = 'BadMaxResults'  # bad max results
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, self.start_index,\
+            invalid_max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(10, len(ret['entry']))
 
         invalid_max_results = '51'  # too big max results > 50
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, self.start_index,\
+            invalid_max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(50, len(ret['entry']))
 
         invalid_max_results = '-1'  # too small max results
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, self.start_index,\
+            invalid_max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -161,16 +131,13 @@ class TestApiMusicReview(DoubanClientTestBase):
     # 针对 orderby 的获取音乐评论异常测试函数
     def test_get_reviews_exception_orderby_v1(self):
         invalid_orderby = 'BadOrderBy'  # bad orderby method
-        url = "/music/subject/"+ self.music_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + invalid_orderby
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.music.reviews(self.music_id, self.start_index,\
+            self.max_results, invalid_orderby)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(int(self.max_results), len(ret['entry']))         
-
+    
     # 针对 music_id 的发布音乐评论异常测试函数
     def test_new_review_exception_music_id_v2(self):
         invalid_music_id = '1000000000000' # wrong music id
@@ -393,6 +360,6 @@ class TestApiMusicReview(DoubanClientTestBase):
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual('invalid_request_uri', ret['msg'])
         self.assertEqual(107, ret['code'])
-
+    
 if __name__ == '__main__':
     main()

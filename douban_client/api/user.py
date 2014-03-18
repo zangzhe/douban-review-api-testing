@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .base import DoubanAPIBase, DEFAULT_START, DEFAULT_COUNT
+from .base import DoubanAPIBase, DoubanAPIBase_v1, DEFAULT_START, DEFAULT_COUNT
 
 
 class User(DoubanAPIBase):
@@ -31,3 +31,11 @@ class User(DoubanAPIBase):
     def followers(self, id, start=DEFAULT_START, count=DEFAULT_COUNT):
         page = start / count
         return self._get('/shuo/v2/users/%s/followers' % id, page=page, count=count)
+
+class User_v1(DoubanAPIBase_v1):
+
+    def __repr__(self):
+        return '<DoubanAPI User_v1>'
+
+    def reviews(self, user_id = '', start_index = '', max_results = '', orderby = ''):
+        return self._get('/people/%s/reviews?alt=json&start-index=%s&max-results=%s&orderby=%s' % (user_id, start_index, max_results, orderby))

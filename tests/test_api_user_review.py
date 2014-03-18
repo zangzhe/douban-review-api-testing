@@ -21,11 +21,8 @@ class TestApiUserReview(DoubanClientTestBase):
 
     # 获取特定用户评论功能测试函数
     def test_get_reviews_function_v1(self):
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, self.start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -39,11 +36,8 @@ class TestApiUserReview(DoubanClientTestBase):
     # 针对 user_id 的获取特定用户评论异常测试函数
     def test_get_reviews_exception_user_id_v1(self):
         invalid_user_id = 'BadUserId'   # bad book id
-        url = "/people/"+ invalid_user_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(invalid_user_id, self.start_index,\
+            self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         # check return string
@@ -53,11 +47,8 @@ class TestApiUserReview(DoubanClientTestBase):
     # nimamui id has only 7 reviews
     def test_get_reviews_exception_start_index_v1(self):
         invalid_start_index = 'BadStartIndex'  # bad start index
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, invalid_start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -65,11 +56,8 @@ class TestApiUserReview(DoubanClientTestBase):
         self.assertEqual(int(self.max_results), len(ret['entry']))
         
         invalid_start_index = '100'  # too big index entries is 0
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, invalid_start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)   
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(stat, status_code['OK'])
@@ -77,11 +65,8 @@ class TestApiUserReview(DoubanClientTestBase):
         self.assertEqual(0, len(ret['entry']))
 
         invalid_start_index = '-1'  # too small start index entries is 1
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, invalid_start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)      
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(stat, status_code['OK'])
@@ -92,11 +77,8 @@ class TestApiUserReview(DoubanClientTestBase):
     # 针对 max_results 的获取特定用户评论异常测试函数
     def test_get_reviews_exception_max_results_v1(self):
         invalid_max_results = 'BadMaxResults'  # bad max results
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, self.start_index,\
+            invalid_max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK']) 
         self.assertTrue(isinstance(ret, dict))
@@ -104,11 +86,8 @@ class TestApiUserReview(DoubanClientTestBase):
         self.assertEqual(6, len(ret['entry']))
 
         invalid_max_results = '51'  # too big max results > 50
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, self.start_index,\
+            invalid_max_results, self.orderby_score)
         ret = json.loads(ret)      
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(stat, status_code['OK'])
@@ -116,11 +95,8 @@ class TestApiUserReview(DoubanClientTestBase):
         self.assertEqual(6, len(ret['entry']))
 
         invalid_max_results = '-1'  # too small max results
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, self.start_index,\
+            invalid_max_results, self.orderby_score)
         ret = json.loads(ret)      
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(stat, status_code['OK'])
@@ -130,11 +106,8 @@ class TestApiUserReview(DoubanClientTestBase):
     # 针对 orderby 的获取特定用户评论异常测试函数
     def test_get_reviews_exception_orderby_v1(self):
         invalid_orderby = 'BadOrderBy'  # bad orderby method
-        url = "/people/"+ self.user_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + invalid_orderby
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.user.reviews(self.user_id, self.start_index,\
+            self.max_results, invalid_orderby)
         ret = json.loads(ret)
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual(stat, status_code['OK'])

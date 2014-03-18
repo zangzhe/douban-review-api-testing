@@ -4,6 +4,8 @@ from pyoauth2 import AccessToken
 
 from .error import DoubanAPIError, DoubanOAuthError
 
+import httplib, pdb
+
 DEFAULT_START = 0
 DEFAULT_COUNT = 20
 
@@ -46,3 +48,23 @@ class DoubanAPIBase(object):
     @check_execption
     def _delete(self, url, **opts):
         return self.access_token.delete(url, **opts)
+
+class DoubanAPIBase_v1(object):
+    def __init__(self, conn):
+        self.conn = conn
+        if not isinstance(self.conn, httplib.HTTPConnection):
+            raise DoubanOAuthError(401, 'UNCONNECTED')
+
+    def _get(self, url):
+        #pdb.set_trace()
+        try:
+            self.conn.request("GET", url)
+            r = self.conn.getresponse()
+        except httplib.BadStatusLine, httplib.CannotSendRequest:
+            self.conn.close()
+            self.conn = httplib.HTTPConnection(DoubanClient_v1.api_server)
+            self.conn.request("GET", url)
+            r = self.conn.getresponse()            
+
+        data = r.read()
+        return r.status, data

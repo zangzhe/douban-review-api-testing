@@ -22,15 +22,12 @@ class TestApiBookReview(DoubanClientTestBase):
     
     # 获取图书评论功能测试函数
     def test_get_reviews_function_v1(self):
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, self.start_index,\
+            self.max_results, self.orderby_score)
         ret = json.loads(ret)
         if self.debug:
             jdata_f = json.dumps(ret, sort_keys=True,indent=2)
-            #print jdata_f        
+            print jdata_f        
             print stat
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -71,33 +68,24 @@ class TestApiBookReview(DoubanClientTestBase):
     # 针对 book_id 的获取图书评论异常测试函数
     def test_get_reviews_exception_book_id_v1(self):
         invalid_book_id = 'BadBookId'   # bad book id
-        url = "/book/subject/"+ invalid_book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(invalid_book_id, \
+            self.start_index, self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         # check return string
         self.assertEqual('bad subject id', ret)
 
         invalid_book_id = '1000000000'   # wrong book id
-        url = "/book/subject/"+ invalid_book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)      
+        stat, ret = self.client_v1.book.reviews(invalid_book_id, \
+            self.start_index, self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         # check return string
         self.assertEqual('wrong subject id', ret)
 
         invalid_book_id = ''   # empty book id
-        url = "/book/subject/"+ invalid_book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)      
+        stat, ret = self.client_v1.book.reviews(invalid_book_id, \
+            self.start_index, self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         # check return string
@@ -106,31 +94,22 @@ class TestApiBookReview(DoubanClientTestBase):
     # 针对 isbn_id 的获取图书评论异常测试函数
     def test_get_reviews_exception_isbn_id_v1(self):
         invalid_isbn_id = 'BadIsbnId'  # bad isbn id
-        url = "/book/subject/isbn/"+ invalid_isbn_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews_isbn(invalid_isbn_id, \
+            self.start_index, self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         self.assertEqual('bad isbn', ret)
 
         invalid_isbn_id = '9787506964000' # wrong isbn id
-        url = "/book/subject/isbn/"+ invalid_isbn_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews_isbn(invalid_isbn_id, \
+            self.start_index, self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         self.assertEqual('bad isbn', ret)
 
-        invalid_isbn_id = '' # null isbn id
-        url = "/book/subject/isbn/"+ invalid_isbn_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        invalid_isbn_id = '' # empty isbn id
+        stat, ret = self.client_v1.book.reviews_isbn(invalid_isbn_id, \
+            self.start_index, self.max_results, self.orderby_score)
         self.assertEqual(stat, status_code['NOT_FOUND'])
         self.assertTrue(isinstance(ret, str))
         self.assertEqual('bad isbn', ret)
@@ -139,11 +118,8 @@ class TestApiBookReview(DoubanClientTestBase):
     # 针对 start_index 的获取图书评论异常测试函数
     def test_get_reviews_exception_start_index_v1(self):
         invalid_start_index = 'BadStartIndex'  # bad start index
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            invalid_start_index, self.max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -151,11 +127,8 @@ class TestApiBookReview(DoubanClientTestBase):
         self.assertEqual(int(self.max_results), len(ret['entry']))
         
         invalid_start_index = '10000'  # too big index
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            invalid_start_index, self.max_results, self.orderby_score)
         ret = json.loads(ret)   
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -163,11 +136,8 @@ class TestApiBookReview(DoubanClientTestBase):
         self.assertEqual(0, len(ret['entry']))
 
         invalid_start_index = '-1'  # too small start index
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ invalid_start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            invalid_start_index, self.max_results, self.orderby_score)
         ret = json.loads(ret)      
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -177,11 +147,8 @@ class TestApiBookReview(DoubanClientTestBase):
     # 针对 max_results 的获取图书评论异常测试函数
     def test_get_reviews_exception_max_results_v1(self):
         invalid_max_results = 'BadMaxResults'  # bad max results
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            self.start_index, invalid_max_results, self.orderby_score)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -189,11 +156,8 @@ class TestApiBookReview(DoubanClientTestBase):
         self.assertEqual(10, len(ret['entry']))
 
         invalid_max_results = '51'  # too big max results > 50
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            self.start_index, invalid_max_results, self.orderby_score)
         ret = json.loads(ret)    
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -201,11 +165,8 @@ class TestApiBookReview(DoubanClientTestBase):
         self.assertEqual(50, len(ret['entry']))
 
         invalid_max_results = '-1'  # too small max results
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + invalid_max_results +\
-        "&orderby=" + self.orderby_score
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            self.start_index, invalid_max_results, self.orderby_score)
         ret = json.loads(ret)      
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -215,11 +176,8 @@ class TestApiBookReview(DoubanClientTestBase):
     # 针对 orderby 的获取图书评论异常测试函数
     def test_get_reviews_exception_orderby_v1(self):
         invalid_orderby = 'BadOrderBy'  # bad orderby method
-        url = "/book/subject/"+ self.book_id + \
-        "/reviews?alt=json&start-index="+ self.start_index +\
-        "&max-results=" + self.max_results +\
-        "&orderby=" + invalid_orderby
-        stat, ret = self.client_v1.get(url)
+        stat, ret = self.client_v1.book.reviews(self.book_id, \
+            self.start_index, self.max_results, invalid_orderby)
         ret = json.loads(ret)
         self.assertEqual(stat, status_code['OK'])
         self.assertTrue(isinstance(ret, dict))
@@ -458,6 +416,6 @@ class TestApiBookReview(DoubanClientTestBase):
         self.assertTrue(isinstance(ret, dict))
         self.assertEqual('invalid_request_uri', ret['msg'])
         self.assertEqual(107, ret['code'])
-
+    
 if __name__ == '__main__':
     main()
