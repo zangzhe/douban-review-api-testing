@@ -13,7 +13,7 @@ from .miniblog import Miniblog
 from .book import Book, Book_v1
 from .movie import Movie
 from .music import Music, Music_v1
-
+from .review import Review_v1
 
 class DoubanAPI(object):
 
@@ -88,3 +88,7 @@ class DoubanAPI_v1(object):
     @property
     def music(self):
         return Music_v1(self.conn)
+
+    @property
+    def review(self):
+        return Review_v1(self.conn)

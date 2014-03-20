@@ -20,15 +20,13 @@ from douban_client.api.error import DoubanAPIError
 try:
     from local_config import KEY, SECRET, CALLBACK, SCOPE, TOKEN
 except ImportError:
-    #KEY = '008c9529361828e901a5bf7ba2487abb'
-    #SECRET = 'b13c7ae9e656b793'
-    KEY = '008c9529361828e901a5bf7ba2487abb'
-    SECRET = 'b13c7ae9e656b793'
-    CALLBACK = 'http://www.google.com.hk'
+    KEY = ''
+    SECRET = ''
+    CALLBACK = ''
 
     SCOPE_MAP = { 'basic': ['douban_basic_common', 'community_basic_user'], }
     SCOPE = ','.join(reduce(lambda x, y: x + y, SCOPE_MAP.values()))
-    TOKEN = 'a92297c2488d660afb67c746d9a8321e'
+    TOKEN = ''
 
 def get_client_v2():
     client = DoubanClient(KEY, SECRET, CALLBACK, SCOPE)

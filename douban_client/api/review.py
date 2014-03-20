@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .base import DoubanAPIBase
-
+from .base import DoubanAPIBase_v1
 
 class Review(DoubanAPIBase):
 
@@ -25,3 +25,10 @@ class Review(DoubanAPIBase):
 
     def delete(self, id):
         return self._delete('/v2/%s/review/%s' % (self.target, id))
+
+class Review_v1(DoubanAPIBase_v1):
+    def __repr__(self):
+        return '<DoubanAPI Review_v1>'
+
+    def get(self, review_id):
+        return self._get('/review/%s?alt=json' % review_id)
