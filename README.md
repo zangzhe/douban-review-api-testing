@@ -7,7 +7,8 @@ douban-client-0.0.6，权限认证基于 OAuth 2.0。
 
 ### douban 评论接口列表及测试覆盖情况：
 ```
-  API描述                      测试覆盖情况   
+  API描述                      测试覆盖情况 
+* 获取指定评论ID的评论         覆盖 api v1 版本
 * 获取指定用户的所有评论       覆盖 api v1 版本
 * 获取指定书籍的所有评论       覆盖 api v1 版本     
 * 发布指定书籍的评论           覆盖 api v2 版本
@@ -72,9 +73,13 @@ FAILED (failures=1)
 
 ### 用例说明
 ```
-## TestApiBookReview 用户评论接口测试类 (5 tests)
+## TestApiIdReview 特定ID评论接口测试类 (2 tests)
+test_get_reviews_function_v1  获取特定ID评论功能测试函数
+test_get_reviews_exception_user_id_v1  针对 review_id 的获取评论异常测试函数
+
+## TestApiUserReview 用户评论接口测试类 (5 tests)
 test_get_reviews_function_v1  获取特定用户评论功能测试函数
-test_get_reviews_exception_user_id_v1  针对 user_id 的获取图书评论异常测试函数
+test_get_reviews_exception_user_id_v1  针对 user_id 的获取用户评论异常测试函数
 test_get_reviews_exception_start_index_v1  针对 start_index 的获取用户评论异常测试函数
 test_get_reviews_exception_max_results_v1  针对 max_results 的获取用户评论异常测试函数
 test_get_reviews_exception_orderby_v1  针对 orderby 的获取用户评论异常测试函数
@@ -158,17 +163,13 @@ C:\Python27\Lib\site-packages\douban_review_api_testing-0.0.1-py2.7.egg。
 问：case 代码中函数的 v1，v2 后缀是什么意思？
 答：v1 代表该测试针对 v1 版本接口，v2 代表该测试针对 v2 版本接口。
 
-6.
-问：在 tests/framework.py 脚本中，已经预先填好的 KEY, SECRET, TOKEN 等参数
-是合法的吗？
-答：这是我本人豆瓣账户申请好的合法 key，可用于测试。
 
-7.
+6.
 问：使用自己豆瓣账号申请的 api key，在引导用户授权后，为何依然无法获取有效
 access_token？
 答：请确保在您的豆瓣上添加了该测试用户，详情见 douban api v2 相关文档。
 
-8.
+7.
 问：为何会有一些测试 FAIL 掉的情况？
 答：在我的反复测试中，目前存在四个测试 FAIL 的情况：前三个是更新图书、电影、
 音乐的评论内容长度没有校验，导致可以发很短的评论，个人认为这是个 bug；最后
@@ -217,13 +218,13 @@ AssertionError: False is not true
 
 ----------------------------------------------------------------------
 
-9.
+8.
 问：测试中大量 case 报 ERROR 和 FAIL，返回报中有 rate_limit_exceeded1 以及
 大量的内容无法获取错误。
 答： 豆瓣官方对普通用户的访问次数设限，通常为 40 次每分钟，频繁执行测试，很可能
 导致临时性被禁用。可以重启计算机或者等待几个小时，就会解禁。
 
-10.
+9.
 问：测试总大量 case 报 ERROR，返回报错 access_token_has_expired。
 答：access_token 过期，需要重新手动获取（我尝试使用 refresh access code 的接口，但每次都失败）。
 
@@ -232,19 +233,21 @@ AssertionError: False is not true
 
 ### TODO
 ```
-1. 针对v1的代码耦合性强，需要改进。
-2. 测试用例补充。
-3. refresh_access_code 接口生效
+1. 测试用例补充。
+2. refresh_access_code 接口生效
 ```
 
 
 ### Changelog
 ```
+__v0.0.3 [2014-03-23]__
+* 针对 api v1 接口进行封装，降低代码耦合性
+* 增加对获取特定id评论接口的测试用例
 __v0.0.3 [2014-03-14]__
-* 针对api返回值，增加对status code, error code的测试
+* 针对 api 返回值，增加对 status code, error code 的测试
 * 增加对空参数的异常测试
-* 删除了我自己的api key等用户认证
-__v0.0.2 [2014-03-04]__
+* 删除了我自己的 api key 等用户认证
+__v0.0.2 [2014-03-04]__ 
 * 增加对 api v1 用户评论接口的测试
 * 调整代码结构
 * 跟新了 access_token
