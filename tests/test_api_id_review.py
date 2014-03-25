@@ -2,6 +2,7 @@
 
 from uuid import uuid4
 from framework import DoubanClientTestBase, main, status_code, test_runner
+import unittest
 import pdb
 import json
 from time import sleep
@@ -10,6 +11,7 @@ class TestApiIdReview(DoubanClientTestBase):
     def setUp(self):
         super(TestApiIdReview, self).setUp()
         self.review_id = '1318949'
+        print 'Running ' + self.id()
 
     # 获取特定id评论功能测试函数
     def test_get_reviews_function_v1(self):

@@ -17,6 +17,7 @@ class TestApiMovieReview(DoubanClientTestBase):
         self.title = self.content = uuid4().hex
         self.content = self.content * 10
         self.rating = '5'
+        print 'Running ' + self.id()
     
     # 增删改电影评论功能测试函数
     def test_new_update_delete_review_function_v2(self):

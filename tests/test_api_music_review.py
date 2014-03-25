@@ -18,6 +18,7 @@ class TestApiMusicReview(DoubanClientTestBase):
         self.title = self.content = uuid4().hex
         self.content = self.content * 10
         self.rating = '5'
+        print 'Running ' + self.id()
 
     # 获取音乐评论功能测试函数
     def test_get_reviews_function_v1(self):
