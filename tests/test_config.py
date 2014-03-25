@@ -1,0 +1,4 @@
+KEY = '03f6dafdd0a1663d0be490f971e432b7'
+SECRET = '630636a1f2039a67'
+CALLBACK = 'http://www.baidu.com'
+TOKEN = '6bbd8428d724dedb43388c7a856e9c91'
