@@ -13,7 +13,7 @@ TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 ROOT_DIR = os.path.dirname(TEST_DIR)
 sys.path.insert(0, ROOT_DIR)
 
-from unittest import main, TestCase
+from unittest import main, TestCase, TextTestRunner
 from douban_client import DoubanClient, DoubanClient_v1
 from douban_client.api.error import DoubanAPIError
 
@@ -23,12 +23,13 @@ SCOPE = ','.join(reduce(lambda x, y: x + y, SCOPE_MAP.values()))
 
 
 try:
-    from test_config import KEY, SECRET, CALLBACK, TOKEN
+    from test_config import KEY, SECRET, CALLBACK, TOKEN, LOG_NAME
 except ImportError:
     KEY = ''
     SECRET = ''
     CALLBACK = ''
     TOKEN = ''
+    LOG_NAME = 'test.log'
 
 def get_client_v2():
     client = DoubanClient(KEY, SECRET, CALLBACK, SCOPE)
@@ -48,6 +49,11 @@ def get_client_v2():
         print_('token code:', client.token_code)
         print_('refresh token code:', client.refresh_token_code)
     return client
+
+def test_runner():
+    log_fd = open(LOG_NAME, 'w')
+    runner = TextTestRunner(stream=log_fd)
+    return runner
 
 client_v1 = DoubanClient_v1()
 client_v2 = get_client_v2()

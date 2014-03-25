@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from uuid import uuid4
-from framework import DoubanClientTestBase, main, status_code                            
+from framework import DoubanClientTestBase, main, status_code, test_runner           
 import pdb
 import json
 from time import sleep
@@ -362,4 +362,4 @@ class TestApiMusicReview(DoubanClientTestBase):
         self.assertEqual(107, ret['code'])
     
 if __name__ == '__main__':
-    main()
+    main(testRunner=test_runner())
