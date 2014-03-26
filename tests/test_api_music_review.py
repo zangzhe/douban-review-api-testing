@@ -176,8 +176,7 @@ class TestApiMusicReview(DoubanClientTestBase):
         self.assertEqual(stat, status_code['CREATED'])
         self.assertTrue(invalid_title.startswith(ret['title']))
         review_id = ret['id']
-        ret = self.client_v2.music.review.delete(review_id)
-        self.assertEqual('OK', ret)
+        stat, ret = self.client_v2.music.review.delete(review_id)
 
         invalid_title = "" # empty title
         stat, ret = self.client_v2.music.review.new(self.music_id, invalid_title, \

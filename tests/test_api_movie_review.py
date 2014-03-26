@@ -179,7 +179,7 @@ class TestApiMovieReview(DoubanClientTestBase):
             invalid_title = "" # empty title
             stat, ret = self.client_v2.movie.review.update(review_id, invalid_title, \
                 self.content)
-            print ret
+            #print ret
             self.assertEqual(stat, status_code['BAD_REQUEST'])
             self.assertTrue(isinstance(ret, dict))
             self.assertEqual('missing_args', ret['msg'])
