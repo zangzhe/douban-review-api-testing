@@ -5,54 +5,24 @@ douban-client-0.0.6，权限认证基于 OAuth 2.0。
 ```
 
 
-### douban 评论接口列表及测试覆盖情况：
-```
-  API描述                      测试覆盖情况 
-* 获取指定评论ID的评论         覆盖 api v1 版本
-* 获取指定用户的所有评论       覆盖 api v1 版本
-* 获取指定书籍的所有评论       覆盖 api v1 版本     
-* 发布指定书籍的评论           覆盖 api v2 版本
-* 更新指定书籍的评论           覆盖 api v2 版本
-* 删除指定书籍的评论           覆盖 api v2 版本
-* 获取指定电影的所有评论       未覆盖
-* 发布指定电影的评论           覆盖 api v2 版本
-* 更新指定电影的评论           覆盖 api v2 版本
-* 删除指定电影的评论           覆盖 api v2 版本
-* 获取指定音乐的所有评论       覆盖 api v1 版本
-* 发布指定音乐的评论           覆盖 api v2 版本
-* 更新指定音乐的评论           覆盖 api v2 版本
-* 删除指定音乐的评论           覆盖 api v2 版本
-```
-
-
-### 安装
-```
-确保已正确安装python2.7.x和setuptools，并接入互联网。
-进入安装程序根目录，运行如下命令进行安装：
-python setup.py install
-```
-
-
 ### 使用说明
 ```
-## OAuth 2.0 认证
-在 module根目录/tests/framewrk.py 中设定有效的 KEY, SECRET, CALLBACK, 
-SCOPE_MAP, SCOPE，TOKEN等参数。
+## 安装
+$ cd douban-review-api-testing/
+$ python setup.py install
 
 ## 运行
-进入 module根目录/tests/，运行如下命令：
-python run.py
-若要运行单独case，可运行如下类似命令：
-python test_api_xxx_review.py
+$ cd douban-review-api-testing/tests/
+$ vim test_config.py  # 配置 test_config.py 中参数 
+$ python run.py  # 批量运行所有 case
+$ python test_api_user_review.py # 运行指定 case
+$ python test_api_user_reveiw.py TestApiUserReview.test_get_reviews_function_v1 # 运行指定测试方法
 
-## 测试结果
-使用python unitest的输出格式：
-.   测试PASS
-F   测试FAIL
-E   测试ERROR
-针对测试中的 FAIL 和 ERROR，会打印出详细的细节，某次执行的结果举例：
-C:\Python27\douban\douban-client-0.0.6(v2)\douban-client-0.0.6\tests>python run.
-py
+## 结果
+标准输出打印当前测试进度，例如：
+Running 
+Running 
+日志文件中以 python unittest 输出格式记录结果细节，例如：
 ............F.........................
 ======================================================================
 FAIL: test_update_review_exception_content_v2 (tests.test_api_book_review.TestAp
@@ -155,86 +125,38 @@ OAuth 2.0，考虑到版本问题应该不是本次测试的主要问题点，�
 答：因为是在 api v1 版本的未授权模式下进行测试的，只能获取 summary。
 
 4.
-问：程序安装到哪里了？
-答：我在 windows 环境下python安装在 c 盘根目录，安装后模块的路径为
-C:\Python27\Lib\site-packages\douban_review_api_testing-0.0.1-py2.7.egg。
-
-5.
 问：case 代码中函数的 v1，v2 后缀是什么意思？
 答：v1 代表该测试针对 v1 版本接口，v2 代表该测试针对 v2 版本接口。
 
-
-6.
+5.
 问：使用自己豆瓣账号申请的 api key，在引导用户授权后，为何依然无法获取有效
 access_token？
 答：请确保在您的豆瓣上添加了该测试用户，详情见 douban api v2 相关文档。
 
-7.
+6.
 问：为何会有一些测试 FAIL 掉的情况？
-答：在我的反复测试中，目前存在四个测试 FAIL 的情况：前三个是更新图书、电影、
-音乐的评论内容长度没有校验，导致可以发很短的评论，个人认为这是个 bug；最后
-一个是获取音乐所有评论时候，默认条目应该是50，但实际却为36，个人认为可能是
-老接口停用，受到限制或者不再维护。
-FAIL case 的详情：
-======================================================================
-FAIL: test_update_review_exception_content_v2 (tests.test_api_book_review.TestAp
-iBookReview)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "C:\Python27\douban\douban-client-0.0.6(v2)\douban-client-0.0.6\tests\tes
-t_api_book_review.py", line 310, in test_update_review_exception_content_v2
-    'review_content_short(should more than 150)'))
-AssertionError: False is not true
+答：正常情况下，应该有11个 FAIL 测试，问题涉及 status code、error_code、
+json数据内容，个人认为均为 bug：
+FAIL: test_update_review_exception_content_v2 (tests.test_api_book_review.TestApiBookReview)
+FAIL: test_new_review_exception_title_v2 (tests.test_api_movie_review.TestApiMovieReview)
+FAIL: test_update_review_exception_content_v2 (tests.test_api_movie_review.TestApiMovieReview)
+FAIL: test_update_review_exception_title_v2 (tests.test_api_movie_review.TestApiMovieReview)
+FAIL: test_get_reviews_exception_max_results_v1 (tests.test_api_music_review.TestApiMusicReview)
+FAIL: test_new_review_exception_content_v2 (tests.test_api_music_review.TestApiMusicReview)
+FAIL: test_new_review_exception_music_id_v2 (tests.test_api_music_review.TestApiMusicReview)
+FAIL: test_new_review_exception_title_v2 (tests.test_api_music_review.TestApiMusicReview)
+FAIL: test_update_review_exception_content_v2 (tests.test_api_music_review.TestApiMusicReview)
+FAIL: test_update_review_exception_review_id_v2 (tests.test_api_music_review.TestApiMusicReview)
+FAIL: test_update_review_exception_title_v2 (tests.test_api_music_review.TestApiMusicReview)
 
-======================================================================
-FAIL: test_update_review_exception_content_v2 (tests.test_api_movie_review.TestA
-piMovieReview)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "C:\Python27\douban\douban-client-0.0.6(v2)\douban-client-0.0.6\tests\tes
-t_api_movie_review.py", line 162, in test_update_review_exception_content_v2
-    'review_content_short(should more than 150)'))
-AssertionError: False is not true
+7.
+问：测试中大量 case 报 ERROR 和 FAIL。
+答：原因可能涉及网络环境、douban 封禁、账号 token 过期等，将我遇到过的问题罗列如下，
+可以在日志文件中搜索这些关键词以帮助定位问题：
+access_token_has_expired  # token 过期，需要重新申请
+rate_limit_exceeded1  # 请求频率过高，douban 限制访问频率为 40 qps。
+socket.error  # 通信错误，与挡墙网络环境相关
 
-======================================================================
-FAIL: test_get_reviews_exception_max_results_v1 (tests.test_api_music_review.Tes
-tApiMusicReview)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "C:\Python27\douban\douban-client-0.0.6(v2)\douban-client-0.0.6\tests\tes
-t_api_music_review.py", line 142, in test_get_reviews_exception_max_results_v1
-    self.assertEqual(50, len(ret['entry']))
-AssertionError: 50 != 36
-
-======================================================================
-FAIL: test_update_review_exception_content_v2 (tests.test_api_music_review.TestA
-piMusicReview)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "C:\Python27\douban\douban-client-0.0.6(v2)\douban-client-0.0.6\tests\tes
-t_api_music_review.py", line 289, in test_update_review_exception_content_v2
-    'review_content_short(should more than 150)'))
-AssertionError: False is not true
-
-----------------------------------------------------------------------
-
-8.
-问：测试中大量 case 报 ERROR 和 FAIL，返回报中有 rate_limit_exceeded1 以及
-大量的内容无法获取错误。
-答： 豆瓣官方对普通用户的访问次数设限，通常为 40 次每分钟，频繁执行测试，很可能
-导致临时性被禁用。可以重启计算机或者等待几个小时，就会解禁。
-
-9.
-问：测试总大量 case 报 ERROR，返回报错 access_token_has_expired。
-答：access_token 过期，需要重新手动获取（我尝试使用 refresh access code 的接口，但每次都失败）。
-
-```
-
-
-### TODO
-```
-1. 测试用例补充。
-2. refresh_access_code 接口生效
 ```
 
 
