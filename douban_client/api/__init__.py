@@ -79,16 +79,16 @@ class DoubanAPI_v1(object):
 
     @property
     def user(self):
-        return User_v1(self.conn)
+        return User_v1(self.conn, self.API_HOST)
 
     @property
     def book(self):
-        return Book_v1(self.conn)
+        return Book_v1(self.conn, self.API_HOST)
 
     @property
     def music(self):
-        return Music_v1(self.conn)
+        return Music_v1(self.conn, self.API_HOST)
 
     @property
     def review(self):
-        return Review_v1(self.conn)
+        return Review_v1(self.conn, self.API_HOST)

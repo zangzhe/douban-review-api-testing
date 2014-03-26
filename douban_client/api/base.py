@@ -50,8 +50,9 @@ class DoubanAPIBase(object):
         return self.access_token.delete(url, **opts)
 
 class DoubanAPIBase_v1(object):
-    def __init__(self, conn):
+    def __init__(self, conn, host):
         self.conn = conn
+        self.host = host
         if not isinstance(self.conn, httplib.HTTPConnection):
             raise DoubanOAuthError(401, 'UNCONNECTED')
 
@@ -62,7 +63,7 @@ class DoubanAPIBase_v1(object):
             r = self.conn.getresponse()
         except httplib.BadStatusLine, httplib.CannotSendRequest:
             self.conn.close()
-            self.conn = httplib.HTTPConnection(DoubanClient_v1.api_server)
+            self.conn = httplib.HTTPConnection(self.host)
             self.conn.request("GET", url)
             r = self.conn.getresponse()            
 
