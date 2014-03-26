@@ -19,7 +19,7 @@ class TestApiBookReview(DoubanClientTestBase):
         self.content = self.content * 10
         self.rating = '5'
         self.debug = False
-        print 'Running ' + self.id()
+        print '[Running] ' + self.id()
     
     # 获取图书评论功能测试函数
     def test_get_reviews_function_v1(self):
