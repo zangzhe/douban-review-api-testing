@@ -1,9 +1,9 @@
 LOG_NAME = 'test.log'  # set the log file name
 
-#KEY = '011817511e094d62034845f35a1be826'
-#SECRET = 'ed55f78fe13b7538'
-#CALLBACK = 'http://www.baidu.com'
-#TOKEN = '1d4494837328b20657cdbd8a597a1612'
+KEY = '011817511e094d62034845f35a1be826'
+SECRET = 'ed55f78fe13b7538'
+CALLBACK = 'http://www.baidu.com'
+TOKEN = '1d4494837328b20657cdbd8a597a1612'
 
 #KEY = '0d43ff0724b5b9ac27cbfd156e212d04'
 #SECRET = 'e3d12f3b7fdb98a0'
@@ -15,10 +15,15 @@ LOG_NAME = 'test.log'  # set the log file name
 #CALLBACK = 'http://www.baidu.com'
 #TOKEN = '75308561cad0528e5f9190256070f7aa'
 
-KEY = '08d2d73edd3ce5961a7885bc97b6b0c2'
-SECRET = '9dcca0504102bc9c'
-CALLBACK = 'http://www.baidu.com'
-TOKEN = '750529ecc0feb97f5f0f7dc642fc2c7d'
+#KEY = '08d2d73edd3ce5961a7885bc97b6b0c2'
+#SECRET = '9dcca0504102bc9c'
+#CALLBACK = 'http://www.baidu.com'
+#TOKEN = '750529ecc0feb97f5f0f7dc642fc2c7d'
+
+#KEY = '00d837ee8ec44e5d0288a7cbac4ceb17'
+#SECRET = 'de129787e413bb4f'
+#CALLBACK = 'http://www.baidu.com'
+#TOKEN = '72352afb14cbfb0f569f80f13e63f12d'
 
 #KEY = '03f6dafdd0a1663d0be490f971e432b7' # douban key
 #SECRET = '630636a1f2039a67'  # douban secret key
