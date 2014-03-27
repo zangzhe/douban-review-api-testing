@@ -150,13 +150,17 @@ FAIL: test_update_review_exception_review_id_v2 (tests.test_api_music_review.Tes
 FAIL: test_update_review_exception_title_v2 (tests.test_api_music_review.TestApiMusicReview)
 
 7.
-问：测试中大量 case 报 ERROR 和 FAIL。
+问：测试中 case 报 ERROR 或大量 FAIL。
 答：原因可能涉及网络环境、douban 封禁、账号 token 过期等，将我遇到过的问题罗列如下，
 可以在日志文件中搜索这些关键词以帮助定位问题：
 access_token_has_expired  # token 过期，需要重新申请
 rate_limit_exceeded1  # 请求频率过高，douban 限制访问频率为 40 qps。
-socket.error  # 通信错误，与挡墙网络环境相关
-
+rate_limit_exceeded2  # IP访问速度限制
+user_has_blocked  # 用户已被 douban 封禁
+socket.error  # 通信错误，与当前网络环境相关
+Errno 10060   # 通信错误，与当前网络环境相关
+Errno 10054   # 通信错误，与当前网络环境相关
+CannotSendRequest()  # 通信错误，与当前网络环境相关
 ```
 
 
