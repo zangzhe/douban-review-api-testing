@@ -20,8 +20,10 @@ $ python test_api_user_reveiw.py TestApiUserReview.test_get_reviews_function_v1 
 
 ## 结果
 标准输出打印当前测试进度，例如：
-Running 
-Running 
+[Running] __main__.TestApiBookReview.test_delete_review_exception_review_id_v2
+[Running] __main__.TestApiBookReview.test_get_reviews_exception_book_id_v1
+[Running] __main__.TestApiBookReview.test_get_reviews_exception_isbn_id_v1
+
 日志文件中以 python unittest 输出格式记录结果细节，例如：
 ............F.........................
 ======================================================================
