@@ -9,7 +9,7 @@ douban-client-0.0.6，权限认证基于 OAuth 2.0。
 ```
 ## 安装
 $ cd douban-review-api-testing/
-$ python setup.py install --user # install @ ~/.local/lib/pythonx.x/site-packages
+$ python setup.py install --user # 默认安装到当前用户的~/.local/lib/pythonx.x/site-packages
 
 ## 运行
 $ cd douban-review-api-testing/tests/
