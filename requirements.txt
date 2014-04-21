@@ -2,4 +2,4 @@ python=2.7.x
 setuptools=setuptools-0.x.win32-py2.7
 py-oauth2>=0.0.8
 six>=1.4.1
-OS=windows 7
+OS=windows 7 or linux 2.6.32 
