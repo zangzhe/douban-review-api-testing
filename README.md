@@ -16,7 +16,7 @@ $ cd douban-review-api-testing/tests/
 $ vim test_config.py  # 配置 test_config.py 中参数 
 $ python run.py  # 批量运行所有 case
 $ python test_api_user_review.py # 运行指定 case
-$ python test_api_user_reveiw.py TestApiUserReview.test_get_reviews_function_v1 # 运行指定测试方法
+$ python test_api_movie_review.py TestApiMovieReview.test_new_update_delete_review_function_v2 # 运行指定测试方法
 
 ## 结果
 标准输出打印当前测试进度，例如：
