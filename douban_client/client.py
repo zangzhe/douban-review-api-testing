@@ -33,6 +33,8 @@ class DoubanClient(DoubanAPI):
 
     def auth_with_token(self, token):
         self.access_token = AccessToken(self.client, token)
+        
+        #pdb.set_trace()
 
     def auth_with_password(self, username, password, **opt):
         self.access_token = self.client.password.get_token(username=username, password=password,
@@ -45,6 +47,10 @@ class DoubanClient(DoubanAPI):
     @property
     def refresh_token_code(self):
         return getattr(self.access_token, 'refresh_token', None)
+
+    @property
+    def expires_at(self):
+        return self.access_token.expires_at
 
     def refresh_token(self, refresh_token):
         #pdb.set_trace()

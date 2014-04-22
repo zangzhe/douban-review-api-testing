@@ -15,6 +15,7 @@ def check_execption(func):
         resp = func(*arg, **kws)
         #if resp.status >= 400:
         #   raise DoubanAPIError(resp)
+        #pdb.set_trace()
         return resp.status, resp.parsed
     return _check
 
