@@ -42,7 +42,7 @@ def get_client_v2():
     if token:
         now_time = int(time.time())
         remaining_seconds = expires_time - now_time
-        print 'sss: ' + str(remaining_seconds)
+        #print 'remains: ' + str(remaining_seconds)
         if remaining_seconds > 3600:
             client.auth_with_token(token)
         else:
